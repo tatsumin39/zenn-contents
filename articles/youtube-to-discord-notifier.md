@@ -1,9 +1,9 @@
 ---
 title: "Youtube配信や動画投稿をDiscordに通知するGASを作ったよ。"
-emoji: "📚"
+emoji: "🤖"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["gas", "youtubeapi", "discord"]
-published: false
+published: true
 ---
 ## 概要
 この仕組みではDiscordの特定のチャンネルにYoutubeチャンネルの動画投稿や配信情報を通知することができます。
