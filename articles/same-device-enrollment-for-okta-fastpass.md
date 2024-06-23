@@ -1,6 +1,6 @@
 ---
 title: "Okta Verifyの同一デバイス登録機能を試してみた！：2024年6月のリリースノート"
-emoji: "🤖"
+emoji: "🐙"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["okta", "fastpass", "mfa"]
 published: false
