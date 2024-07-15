@@ -6,6 +6,11 @@ topics: ["okta", "fastpass", "mfa"]
 published: true
 publication_name: joug
 ---
+:::message
+2024.07.15記事更新
+Windows版Okta Verifyバージョン5.1.3の正式リリースに伴い内容を更新
+:::
+
 こんにちは！JOUG運営メンバーのたつみんです！
 
 OktaではAuthenticatorとしてOkta Verifyを利用することが多いと思います。
@@ -29,7 +34,8 @@ On orgs with Okta FastPass, the Okta Verify enrollment process has been streamli
 
 ## 留意点
 
-なお、この機能はAndroid、iOS、macOSのみ対応ですが、現在プレビュー版のOkta Verifyバージョン5.1.3ではWindowsにも対応しています。正式リリースを待ちましょう。
+~~なお、この機能はAndroid、iOS、macOSのみ対応ですが、現在プレビュー版のOkta Verifyバージョン5.1.3ではWindowsにも対応しています。正式リリースを待ちましょう。~~
+Windwos版Okta Verifyバージョン5.1.3がリリースされたため、Okta Verifyが利用できるOSプラットフォーム全てでこの機能が利用できるようになりました。
 
 
 ## 設定方法
@@ -42,7 +48,7 @@ On orgs with Okta FastPass, the Okta Verify enrollment process has been streamli
 
 ### Okta Verify Enrollment optionsの調整
 Okta管理画面>AuthenticatorsからOkta VerifyのEditからEnrollment optionsを以下のように**Any method**となっているかを確認します。
-これにより現在対応ができないWindows端末の場合にQRコードによる登録を許容することができます。
+これにより従来のQRコードによる登録を許容することができます。
 ![](/images/same-device-enrollment-for-okta-fastpass/image02.png)
 
 ## ユーザーアクティベーション時の挙動
@@ -52,7 +58,7 @@ Okta管理画面>AuthenticatorsからOkta VerifyのEditからEnrollment options�
 ![](/images/same-device-enrollment-for-okta-fastpass/image03.png)
 3. **Okta Verifyの設定**をクリックします。
 ![](/images/same-device-enrollment-for-okta-fastpass/image04.png)
-   - ここで従来のモバイル版Okta Verifyでの登録を行うためのリンクも用意されています。これはOkta Verify Enrollment optionsの調整で設定したためです。
+   - ここで従来のモバイル版Okta Verifyでの登録を行うためのリンクも用意されています。これはOkta Verify Enrollment optionsで**Any method**を選択したためです。
 4. Okta Verifyが起動するので**アカウントの追加**をクリックします。
 ![](/images/same-device-enrollment-for-okta-fastpass/image05.png)
    - ここではすでにOktaのテナントURLが入力された状態となっています。
@@ -63,5 +69,3 @@ Okta管理画面>AuthenticatorsからOkta VerifyのEditからEnrollment options�
 ## まとめ
 このEarly Access(早期アクセス)によってOktaアカウントのアクティベーション時に複数の端末を行き来しなくてよくなりました。ユーザーにとっても説明をする情報システム部門にとっても摩擦のないスムースなオペレーションができることは素晴らしいなと思います。
 一つ残念なのは、登録後に自動遷移しない点です。Okta Dashboardまで自動遷移すれば、作業がスムーズに完了すると思います。
-
-Windows版Okta Verifyもすぐに対応バージョンにアップデートされると思います。そうなればすべてのプラットフォームで悩みの種が一つ減りますね。
