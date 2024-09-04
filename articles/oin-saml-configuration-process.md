@@ -4,7 +4,7 @@ emoji: "⚙️"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["okta"]
 published: true
-published_at: 2024-09-05 15:00
+published_at: 2024-09-06 08:00
 publication_name: joug
 ---
 こんにちは！たつみんです🖐️
@@ -30,7 +30,7 @@ OktaでSaaSのSAML設定やSCIM設定などの連携をテンプレート化し�
 2. Okta管理画面からApplication > Your OIN Integrationsにアクセスし、ウィザードに従って設定
 3. 英語でCustomer configuration document guidelinesを作成し、オンラインで公開
 4. SAML連携アプリケーションを作成し、セルフテストを実施
-5. **Okta (本国)**へ申請
+5. **Okta (本国)** へ申請
 6. フィードバックで修正点があれば修正後、再度審査依頼
 7. 審査OKの連絡後、公開日を調整
 8. Okta Japan担当者とプレスリリースに関して打ち合わせ
@@ -64,8 +64,8 @@ Your OIN Integrationsは非常に使いやすいので、簡単にご紹介し�
 ![](/images/oin-saml-configuration-process/image09.png)
 
 
-
-Run Testを実行すると自動的にシークレットブラウザが起動し、Okta Browser Pluginによりテストが進行します。私たちのSaaSはSP-initiatedとJust-In-Time provisioningに対応していたため、それぞれのテストを実行しました。テスト結果は自動的にJSONファイルとしてエクスポート可能です。
+### Run Testの挙動
+Run Testを実行すると自動的にシークレットブラウザが起動し、Okta Browser Pluginによりテストが進行します。私たちのSaaSはSP-initiatedとJust-In-Time provisioningに対応していたため、それぞれのテストを実行しました。テスト結果は自動的にJSONファイルとして作成され、エクスポートすることが可能です。
 
 
 ## 苦労した点
