@@ -21,7 +21,7 @@ OktaでSaaSのSAML設定やSCIM設定などの連携をテンプレート化し�
 - Okta Browser Plugin
 - Customer configuration document guidelines 公開用のオンラインストレージ
 
-## OINへの登録から公開までの流れ
+## OINへの公開までの流れ
 基本的な流れとしては、以下のガイドに従い作成し、申請を行います
 [Submit an SSO integration with the OIN Wizard](https://developer.okta.com/docs/guides/submit-oin-app/saml2/main/)
 
