@@ -4,7 +4,7 @@ emoji: "⚙️"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["okta"]
 published: true
-published_at: 2024-09-6 13:00
+published_at: 2024-09-06 13:00
 publication_name: joug
 ---
 こんにちは！たつみんです🖐️
