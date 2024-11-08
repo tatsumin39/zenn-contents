@@ -3,7 +3,7 @@ title: "YouTube通知Botを作る！Node.jsとPostgreSQLでほぼリアルタイ
 emoji: "📤"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["nodejs", "PostgreSQL", "youtubeapi", "discord", "flyio"]
-published: true
+published: false
 ---
 ## はじめに
 このプロジェクトは、[以前GASで作成した通知機能](https://zenn.dev/tatsumin/articles/youtube-to-discord-notifier)をnode.jsとPostgreSQLに移植し、スラッシュコマンドなどの機能追加を行いました。
