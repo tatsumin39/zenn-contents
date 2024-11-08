@@ -1,6 +1,6 @@
 ---
 title: "YouTube通知Botを作る！Node.jsとPostgreSQLでほぼリアルタイム通知"
-emoji: "📥"
+emoji: "📤"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["nodejs", "PostgreSQL", "youtubeapi", "discord", "flyio"]
 published: true
