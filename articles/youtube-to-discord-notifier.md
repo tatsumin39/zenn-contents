@@ -1,18 +1,18 @@
 ---
-title: "Youtube配信や動画投稿をDiscordに通知するGASを作ったよ。"
+title: "YouTube配信や動画投稿をDiscordに通知するGASを作ったよ。"
 emoji: "🤖"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["gas", "youtubeapi", "discord"]
 published: true
 ---
 ## 概要
-この仕組みではDiscordの特定のチャンネルにYoutubeチャンネルの動画投稿や配信情報を通知することができます。
-Youtube自体にも通知機能はありますがDiscordチャンネルに通知することで複数名で話題を共有でき、コミュニティを盛り上げる助けになるのではないかと考えて作ってみました。
+この仕組みではDiscordの特定のチャンネルにYouTubeチャンネルの動画投稿や配信情報を通知することができます。
+YouTube自体にも通知機能はありますがDiscordチャンネルに通知することで複数名で話題を共有でき、コミュニティを盛り上げる助けになるのではないかと考えて作ってみました。
 
 ## 大まかな処理の流れ
 以下に大まかな流れを記載します。後述するチャンネルアイコンの取得などについては触れていません。
 1. トリガーによってGASが起動する
-2. YoutubeチャンネルのRSSフィードからVideoIdを取得する
+2. YouTubeチャンネルのRSSフィードからVideoIdを取得する
 3. スプレッドシートにVideoIdがない場合はYouTube Data APIの[Videos: list](https://developers.google.com/youtube/v3/docs/videos/list?hl=ja)を実行し取得した情報をスプレッドシートに記録し、Discordへ通知を行います。
 4. スプレッドシートにVideoIdがある場合で記録されたレコードが配信予定もしくは配信中の場合に、RSSフィードのアップデート時刻がスプレッドシートに記録された時刻と異なる場合は配信状態の変更か配信予定時刻の変更かタイトル変更かを判定し最新情報をスプレッドシートに記録し、Discordへ通知を行います。
 
@@ -28,13 +28,13 @@ https://github.com/tatsumin39/youtube-to-discord-notifier
 
 ## こだわったポイント
 ### Discord通知の時のアイコン
-Discordに通知する際のBotのアイコンをそのYoutubeチャンネルのアイコンとすることで識別性を高めています。
+Discordに通知する際のBotのアイコンをそのYouTubeチャンネルのアイコンとすることで識別性を高めています。
 これはYouTube Data APIの[Channels: list](https://developers.google.com/youtube/v3/docs/channels/list?hl=ja)にて取得しています。
 
 ## 苦労したポイント
 ### API使用量の調節
 YouTube Data APIは1日あたりの使用量は10,000まで利用できます。
-今回は行なっていませんが検索リクエストの場合は1回あたり使用量が100と多く、Video: listやChannels: listは1回あたり使用量が1と少なかったのでまだよかったのですがコードを作成し始めたころはRSSフィードで習得したVideoIdに対して毎回APIを実行していたため1日で使用量が8,000近く上昇してしまいました。
+今回は行なっていませんが検索リクエストの場合は1回あたり使用量が100と多く、Video: listやChannels: listは1回あたり使用量が1と少なかったのでまだよかったのですがコードを作成し始めたころはRSSフィードで取得したVideoIdに対して毎回APIを実行していたため1日で使用量が8,000近く上昇してしまいました。
 大まかな処理の流れで記載しているように最小限のAPI実行となるように調整することでかなり落ち着いた数値で推移するようになりました。
 
 ### スプレッドシート検索時の処理速度

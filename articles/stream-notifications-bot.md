@@ -39,7 +39,7 @@ published: true
 以下は直近15分以内に開始予定のライブ配信情報がなかった場合の表示内容です。
 ![](/images/stream-notifications-bot/image05.png)
 
-`/upcoming 60` のようにオプションとして任意の分数を指定することが可能です。
+`/upcoming 60` のようにオプションとして任意の整数を指定することが可能です。
 以下は60分以内に開始予定のライブ配信情報が1件あった場合の表示内容です。
 ![](/images/stream-notifications-bot/image06.png)
 
