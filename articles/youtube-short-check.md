@@ -1,6 +1,6 @@
 ---
 title: "YouTubeのShort動画を簡単に判定する方法"
-emoji: "🐹"
+emoji: "🚦"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["node", "youtube"]
 published: true
