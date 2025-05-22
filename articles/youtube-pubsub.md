@@ -8,14 +8,13 @@ published_at: 2025-05-23 08:00
 ---
 ## 概要
 以前作成した以下の記事で、YouTubeのライブ配信や動画投稿をDiscordにリアルタイムで通知するシステムを構築しました。
-https://zenn.dev/tatsumin/articles/stream-notifications-bo
+https://zenn.dev/tatsumin/articles/stream-notifications-bot
 
 この仕組みでPostgreSQLにはかなりのデータが保存されてきており、そのデータを利用してさまざまな見せ方ができるのではないかと考えて、Webアプリとして[Streamer Now](https://streamer-now.com)を作成し公開しました。
 
-
 これまでの仕組みではRSSフィードを定期的にチェックするポーリング方式で行なっていたため、YouTube Feedへのアクセス負荷を考慮する必要がありました。
 具体的には1分ごとにポーリングする場合は70チャンネルも登録できないという課題がありました。
-そこで、[Google PubSubHubbub Hub](https://pubsubhubbub.appspot.com/)を利用してYouTubeの動画投稿や配信情報をリアルタイムで取得する方法を試してみました。
+そこで、[Google PubSubHubbub Hub](https://pubsubhubbub.appspot.com/)を利用してYouTubeの動画投稿や配信情報をリアルタイムで取得する方法を実装しました。
 
 ### Google PubSubHubbub Hubのメリット
 
@@ -24,11 +23,22 @@ RSSフィードをポーリングするよりも以下のようなメリット�
 - リアルタイムで通知を受け取れる
 - ポーリングするよりもサーバー負荷が少ない
 - 削除された動画の情報も取得できる
+- スケーラビリティが高く、多数のチャンネルを監視できる
 
 ## サンプルコード
 以下のレポジトリにサンプルコードを公開しています。
 
 https://github.com/tatsumin39/youtube-pubsubhubbub-example
+
+## PubSubHubbubの仕組み
+
+PubSubHubbub（WebSub）は「Publish-Subscribe」パターンを実装したプロトコルです。以下の3つの役割があります。
+
+1. **Publisher（発行者）**: コンテンツを提供するサービス（YouTubeなど）
+2. **Hub**: 購読者に通知を配信するサーバー（Google PubSubHubbub Hub）
+3. **Subscriber（購読者）**: 通知を受け取るサービス（あなたのアプリケーション）
+
+この仕組みにより、Subscriberはコンテンツの更新を常にチェックする必要がなく、更新があった時だけHubから通知を受け取ることができます。
 
 ## 処理の流れ
 サンプルコードでは以下のような処理の流れになります。
@@ -171,7 +181,6 @@ export async function POST(request: NextRequest) {
 
 https://developers.google.com/youtube/v3/guides/push_notifications?hl=ja
 
-
 また、ドキュメントには記載されていませんが動画データが削除された場合は、以下のような通知が送信されます。
 
 ```xml
@@ -187,25 +196,52 @@ https://developers.google.com/youtube/v3/guides/push_notifications?hl=ja
 </feed>
 ```
 
-## サンプルコードにない考慮ポイント
+## 実装時の考慮ポイント
 
-###  PubSubHubbubの有効期限
+###  PubSubHubbubの有効期限と再登録
 Google PubSubHubbub Hubは登録時に有効期限が設定されるため、定期的に再登録をする必要があります。
-チャンネル管理用のテーブルを作成しておき、チャンネルIDと有効期限を保存し、有効期限が切れる前に更新するようなロジックを実装すると良いでしょう。
+チャンネル管理用のテーブルを作成しておき、チャンネルIDと有効期限を保存し、有効期限が切れる前に更新するようなロジックを実装するとよいでしょう。
+
+```sql
+CREATE TABLE channel_subscriptions (
+  channel_id TEXT PRIMARY KEY,
+  subscription_expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+```
 
 ### 詳細な動画情報の取得とデータベースへの保存
 PubSubHubbubから送信されるデータから取得できる項目には配信予定時刻などがないため、videoIdからYouTube Data APIの[Videos: list](https://developers.google.com/youtube/v3/docs/videos/list?hl=ja)を利用して詳細情報を取得しデータベースに保存しておくと良いでしょう。
-一度送信された動画情報でPubSubHubbubから再度送信されることがあります。そのため、データベースに保存済みの場合はYouTube Data APIの[Videos: list](https://developers.google.com/youtube/v3/docs/videos/list?hl=ja)は実行せず、更新を行うロジックは別とするほうが効率が良くなると思います。
 
-### 動画情報の更新を取得する際の考慮ポイント
-作成したWebアプリでは配信前から配信中などのような状態変化はデータベースから配信1時間前からYouTube Data APIの[Videos: list](https://developers.google.com/youtube/v3/docs/videos/list?hl=ja)を実行することで早めに配信が始まった場合や予定時間が後ろ倒しになった場合に対応できるようにしています。この時に配信中の動画についても視聴者数や配信終了を検知するために合わせてリクエストを実施しています。
-このAPIは一度に50件まで動画IDを指定できます。常に配信中の動画が存在することが多いため、配信1時間前のデータを含めても50件までであればAPI消費量は変わりません。
-もちろん50件を超えるような場合は複数回に分けてAPIを実行する処理が必要になります。
+一度送信された動画情報でPubSubHubbubから再度送信されることがあります。そのため、データベースに保存済みの場合はYouTube Data APIの実行を省略し、更新を行うロジックは別とするほうが効率的です。
+
+### 動画情報の更新を取得する際の最適化
+作成したWebアプリでは配信前から配信中などのような状態変化を検知するために、以下の戦略を採用しています：
+
+1. 配信1時間前からYouTube Data APIを定期的に実行
+2. 配信中の動画についても視聴者数や配信終了を検知するためにリクエストを実施
+3. YouTube Data APIの[Videos: list](https://developers.google.com/youtube/v3/docs/videos/list?hl=ja)を使用（一度に50件まで動画IDを指定可能）
+
+この最適化により、早めに配信が始まった場合や予定時間が後ろ倒しになった場合にも対応できます。また、常に配信中の動画と配信予定の動画が合わせて50件以内であれば、API消費量を抑えることができます。
+
+## エラーハンドリングとロギング
+
+実運用では以下のようなエラーハンドリングとロギングを実装することをお勧めします：
+
+1. PubSubHubbub Hubへのリクエスト失敗時のリトライ機構
+2. Webhook受信時のエラーハンドリング
+3. 通知処理の非同期実行によるWebhookレスポンスの高速化
+4. 重要なイベントのロギングと監視
 
 ## まとめ
-Google PubSubHubbub Hubを利用することで、RSSフィードをポーリングする際に感じていた課題の多くが解決でき、現在では300ほどのチャンネルの更新をリアルタイムで受け取ることができています。
-また、RSSフィードをポーリングする際には更新頻度が低いチャンネルについてはポーリング間隔を長くすることで対応していましたが、複数のチャンネルのポーリング間隔を調整するのが大変でした。それがPubSubHubbubを利用することでポーリング間隔にとらわれずに更新を受け取れるようになり、チャンネル管理も容易になりました。
+Google PubSubHubbub Hubを利用することで、RSSフィードをポーリングする際に感じていた課題の多くが解決でき、現在では300以上のチャンネルの更新をリアルタイムで受け取ることができています。
 
+また、RSSフィードをポーリングする際には更新頻度が低いチャンネルについてはポーリング間隔を長くするなどの調整が必要でしたが、PubSubHubbubを利用することでポーリング間隔にとらわれずに更新を受け取れるようになり、チャンネル管理も容易になりました。
+
+今後YouTubeのAPIクォータを考慮したシステム設計をする際には、ぜひPubSubHubbubの活用をご検討ください。
 
 ## 参考文献
-https://zenn.dev/meihei/articles/01cd06f729056a
+- [YouTube API - 通知について](https://developers.google.com/youtube/v3/guides/push_notifications?hl=ja)
+- [WebSub（旧PubSubHubbub）の仕様](https://www.w3.org/TR/websub/)
+- https://zenn.dev/meihei/articles/01cd06f729056a
