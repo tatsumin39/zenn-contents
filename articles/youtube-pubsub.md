@@ -2,9 +2,9 @@
 title: "ポーリング方式からPubSubHubbubへ：YouTubeの動画更新を効率的に取得する技術"
 emoji: "⚡️"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["pubsub", "youtube","typescript"]
+topics: ["websub", "youtube","typescript"]
 published: true
-published_at: 2025-05-24 07:00
+published_at: 2025-05-23 08:00
 ---
 ## 概要
 以前作成した以下の記事で、YouTubeのライブ配信や動画投稿をDiscordにリアルタイムで通知するシステムを構築しました。
@@ -207,5 +207,5 @@ Google PubSubHubbub Hubを利用することで、RSSフィードをポーリン
 また、RSSフィードをポーリングする際には更新頻度が低いチャンネルについてはポーリング間隔を長くすることで対応していましたが、複数のチャンネルのポーリング間隔を調整するのが大変でした。それがPubSubHubbubを利用することでポーリング間隔にとらわれずに更新を受け取れるようになり、チャンネル管理も容易になりました。
 
 
-## 参考URL
+## 参考文献
 https://zenn.dev/meihei/articles/01cd06f729056a
