@@ -4,7 +4,7 @@ emoji: "⚡️"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["pubsub", "youtube","typescript"]
 published: true
-published_at: 2025-05-24 08:00
+published_at: 2025-05-24 07:00
 ---
 ## 概要
 以前作成した以下の記事で、YouTubeのライブ配信や動画投稿をDiscordにリアルタイムで通知するシステムを構築しました。
