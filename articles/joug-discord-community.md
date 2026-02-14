@@ -1,16 +1,18 @@
 ---
-title: "Oktaユーザーの情報共有の場としてJOUGオンラインコミュニティをのDiscordに開設しました🎉"
+title: "Oktaユーザーの情報共有の場としてJOUGオンラインコミュニティをDiscordに開設しました🎉"
 emoji: "🐙"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics: ["okta", "auth0"]
 published: true
-published_at: 2099-03-10 08:00
+published_at: 2026-02-14 13:00
 publication_name: joug
 ---
 こんにちは！JOUG運営メンバーのたつみんです。
 今回はJOUGコミュニティについて大きなアップデートをお知らせします。
 
 ## Discord上にオンラインコミュニティを開設しました👏
+以下のリンクから参加できます！
+https://discord.gg/HckTrnEphP
 
 JOUGではこれまで勉強会を複数開催してきましたが、学びをより促進する場としてDiscordのコミュニティ機能を活用することを決定しました。
 Discord内には、従業員向けOkta Workforce IdentityとAuth0それぞれのカテゴリーを用意しています。
@@ -66,14 +68,11 @@ JOUG Discordコミュニティに参加すると、以下のような質問が�
 JOUGでは2026年から、オンラインコミュニティと勉強会の両方を、これまで以上に活発に運営していく予定です。
 Discordはその中心となる重要な役割を担ってくれると考えています。
 
-なお、これまで開設していたX（旧Twitter）コミュニティやFacebookのコミュニティは、この機に閉鎖させていただきます。
+なお、これまで開設していたX（旧Twitter）コミュニティやFacebookのコミュニティは、この機に順次閉鎖させていただきます。
 長らくご参加いただいた皆様には心より感謝申し上げます。
 
-## JOUG Discordへの参加はこちら
-以下のリンクからお願いします！
-<公開時にDiscord招待リンクを無期限で発行する>
-
 ## 各種リンク
+- [JOUG Discord](https://discord.gg/HckTrnEphP)
 - [connpass](https://okta.connpass.com/)
 - [X（旧Twitter）](https://x.com/joug_official)
 - [YouTube](https://www.youtube.com/@joug)
